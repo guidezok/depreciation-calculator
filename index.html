@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมคำนวณค่าเสื่อมราคา (Depreciation Calculator)</title>
+    <title>โปรแกรมคำนวณค่าเสื่อมราคา</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -101,6 +101,17 @@
         .info-box p {
             font-size: 0.92rem;
             margin-bottom: 6px;
+        }
+
+        .formula-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin: 4px 0;
         }
 
         .form-grid {
@@ -244,8 +255,8 @@
     <div id="sl" class="tab-content calculator-card">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Straight-Line Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาเป็นจำนวนเงินเท่ากันทุกปีตลอดอายุการใช้งาน</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีการใช้งานสม่ำเสมอ ประสิทธิภาพไม่ลดลงตามกาลเวลา เช่น อาคารสำนักงาน, เครื่องเรือน, อุปกรณ์สำนักงาน, สิทธิบัตร</p>
+            <p><strong>สมการคำนวณ:</strong> <span class="formula-badge">D = (C - S) / N</span></p>
+            <p><strong>คำอธิบายตัวแปร:</strong> <b>C</b> = ราคาทุน, <b>S</b> = มูลค่าซาก, <b>N</b> = อายุการใช้งาน, <b>D</b> = ค่าเสื่อมราคาประจำปี</p>
         </div>
 
         <div class="form-grid">
@@ -300,8 +311,9 @@
     <div id="ddb" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Double-Declining Balance Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> เป็นการคิดค่าเสื่อมแบบอัตราเร่ง โดยปีแรกๆ จะบันทึกค่าเสื่อมราคาสูง แล้วค่อยๆ ลดลงในปีถัดๆ ไป</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีประสิทธิภาพการทำงานสูงสุดในช่วงแรก และเสื่อมสภาพ/ล้าสมัยเร็ว เช่น รถยนต์ขนส่ง, เครื่องจักรโรงงาน, เครื่องบิน</p>
+            <p><strong>สมการหาอัตราเสื่อมราคาคงที่:</strong> <span class="formula-badge">R = 2 / N</span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = BV<sub>t-1</sub> × R</span></p>
+            <p><strong>โดยที่:</strong> <b>R</b> = อัตราเสื่อมราคาคงที่ | <b>N</b> = อายุการใช้งาน | <b>D<sub>t</sub></b> = ค่าเสื่อมราคาประจำปีที่ t | <b>BV<sub>t-1</sub></b> = มูลค่าตามบัญชีเหลืออยู่ ณ สิ้นปีที่แล้ว (หรือต้นปีนี้)</p>
         </div>
 
         <div class="form-grid">
@@ -327,7 +339,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมราคาคงที่ (R = 2/N)</span>
+                    <span>อัตราเสื่อมราคาคงที่ (R = 2/N)</span>
                     <strong id="ddb-rate">0%</strong>
                 </div>
             </div>
@@ -338,9 +350,9 @@
                             <th>ปีที่ (t)</th>
                             <th>มูลค่าต้นปี (BV<sub>t-1</sub>)</th>
                             <th>อัตราคงที่ (R)</th>
-                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub> = BV<sub>t-1</sub> × R)</th>
+                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub>)</th>
                             <th>ค่าเสื่อมราคาสะสม</th>
-                            <th>มูลค่าตามบัญชีปลายปี</th>
+                            <th>มูลค่าปลายปี (BV<sub>t</sub>)</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -353,8 +365,9 @@
     <div id="syd" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Sum-of-the-Years'-Digits Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาแบบอัตราเร่ง โดยคำนวณจากสัดส่วนของอายุการใช้งานที่เหลืออยู่ หารด้วยผลรวมจำนวนปีทั้งหมด (S<sub>y</sub>)</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่ลดมูลค่าลงอย่างรวดเร็วในช่วงแรก หรือล้าสมัยง่าย เช่น คอมพิวเตอร์, รถยนต์, อุปกรณ์เทคโนโลยี</p>
+            <p><strong>สมการหาผลรวมจำนวนปีทั้งหมด:</strong> <span class="formula-badge">S<sub>y</sub> = [N × (N + 1)] / 2</span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = (C - S) × [(N - t + 1) / S<sub>y</sub>]</span></p>
+            <p><strong>โดยที่:</strong> <b>S<sub>y</sub></b> = ผลรวมตัวเลขจำนวนปีทั้งหมด | <b>N</b> = อายุการใช้งาน | <b>D<sub>t</sub></b> = ค่าเสื่อมปีที่ t | <b>C</b> = ราคาทุน | <b>S</b> = มูลค่าซาก | <b>T</b> = ปีที่กำลังคำนวณ</p>
         </div>
 
         <div class="form-grid">
@@ -380,7 +393,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>ผลรวมจำนวนปีทั้งหมด S<sub>y</sub> = N(N+1)/2</span>
+                    <span>ผลรวมจำนวนปีทั้งหมด (S<sub>y</sub>)</span>
                     <strong id="syd-sum">0</strong>
                 </div>
             </div>
@@ -405,8 +418,9 @@
     <div id="uop" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Units of Production Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาตามปริมาณการใช้งานจริง คำนวณอัตราต่อหน่วยผลผลิต (R<sub>U</sub>) ก่อน แล้วคูณจำนวนผลผลิตประจำงวด (U<sub>t</sub>)</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่การเสื่อมสภาพขึ้นอยู่กับการใช้งานจริงมากกว่าระยะเวลา เช่น เครื่องจักรในโรงงาน, รถยนต์ขนส่ง (คิดตามระยะทาง)</p>
+            <p><strong>สมการหาอัตราค่าเสื่อมต่อหน่วย:</strong> <span class="formula-badge">R<sub>U</sub> = (C - S) / U<sub>T</sub></span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = U<sub>t</sub> × R<sub>U</sub></span></p>
+            <p><strong>โดยที่:</strong> <b>R<sub>U</sub></b> = อัตราค่าเสื่อมต่อหน่วย | <b>C</b> = ราคาทุน | <b>S</b> = มูลค่าซาก | <b>U<sub>T</sub></b> = ประมาณการผลผลิตทั้งหมด | <b>U<sub>t</sub></b> = จำนวนผลผลิตงวด t | <b>D<sub>t</sub></b> = ค่าเสื่อมปีที่ t</p>
         </div>
 
         <div class="form-grid">
@@ -419,11 +433,11 @@
                 <input type="number" id="uop-s" placeholder="เช่น 10000">
             </div>
             <div class="form-group">
-                <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย/ชม.]:</label>
+                <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย]:</label>
                 <input type="number" id="uop-ut" placeholder="เช่น 50000">
             </div>
             <div class="form-group">
-                <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย/ชม.]:</label>
+                <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย]:</label>
                 <input type="number" id="uop-ut-cur" placeholder="เช่น 10000">
             </div>
         </div>
@@ -436,11 +450,11 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมต่อหน่วยผลผลิต R<sub>U</sub> = (C - S) / U<sub>T</sub></span>
+                    <span>อัตราค่าเสื่อมต่อหน่วย (R<sub>U</sub>)</span>
                     <strong id="uop-rate">0.00 บาท/หน่วย</strong>
                 </div>
                 <div class="sum-card">
-                    <span>ค่าเสื่อมราคาประจำปี t (D<sub>t</sub> = U<sub>t</sub> × R<sub>U</sub>)</span>
+                    <span>ค่าเสื่อมราคาประจำปี t (D<sub>t</sub>)</span>
                     <strong id="uop-dep-cur">0.00 บาท</strong>
                 </div>
             </div>
@@ -498,7 +512,7 @@
         document.getElementById('sl-result').style.display = 'block';
     }
 
-    // 2. Double-Declining Balance (R = 2/N, D_t = BV_{t-1} * R)
+    // 2. Double-Declining Balance
     function calcDDB() {
         const C = parseFloat(document.getElementById('ddb-c').value);
         const S = parseFloat(document.getElementById('ddb-s').value) || 0;
@@ -509,26 +523,25 @@
             return;
         }
 
-        const R = 2 / N; // R = 2 / N
+        const R = 2 / N;
         document.getElementById('ddb-rate').innerText = (R * 100).toFixed(2) + '%';
 
         const tbody = document.querySelector('#ddb-table tbody');
         tbody.innerHTML = '';
 
-        let BV_t_minus_1 = C; // BV_{t-1} คือ มูลค่าตามบัญชีเหลืออยู่ ณ ต้นปีนี้
+        let BV_t_minus_1 = C;
         let accumD = 0;
 
         for (let t = 1; t <= N; t++) {
-            let D_t = BV_t_minus_1 * R; // D_t = BV_{t-1} * R
+            let D_t = BV_t_minus_1 * R;
             
-            // ปรับมูลค่าปีสุดท้ายไม่ให้ต่ำกว่ามูลค่าซาก (S)
             if (BV_t_minus_1 - D_t < S || t === N) {
                 D_t = Math.max(0, BV_t_minus_1 - S);
             }
 
             const start_BV = BV_t_minus_1;
             accumD += D_t;
-            const BV_t = BV_t_minus_1 - D_t; // มูลค่าปลายปี
+            const BV_t = BV_t_minus_1 - D_t;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -541,13 +554,13 @@
             `;
             tbody.appendChild(tr);
 
-            BV_t_minus_1 = BV_t; // อัปเดตมูลค่าต้นปีหน้า
+            BV_t_minus_1 = BV_t;
         }
 
         document.getElementById('ddb-result').style.display = 'block';
     }
 
-    // 3. Sum of the Years' Digits (S_y = N(N+1)/2, D_t = (C - S) * (N - t + 1)/S_y)
+    // 3. Sum of the Years' Digits
     function calcSYD() {
         const C = parseFloat(document.getElementById('syd-c').value);
         const S = parseFloat(document.getElementById('syd-s').value) || 0;
@@ -558,18 +571,18 @@
             return;
         }
 
-        const S_y = (N * (N + 1)) / 2; // S_y = N * (N + 1) / 2
+        const S_y = (N * (N + 1)) / 2;
         document.getElementById('syd-sum').innerText = S_y;
 
         const tbody = document.querySelector('#syd-table tbody');
         tbody.innerHTML = '';
 
         let bv = C;
-        const base = C - S; // (C - S)
+        const base = C - S;
 
-        for (let T = 1; T <= N; T++) { // T คือ ปีที่กำลังคำนวณ
-            const fraction = (N - T + 1) / S_y; // (N - t + 1) / S_y
-            const D_t = base * fraction; // D_t = (C - S) * ((N - t + 1) / S_y)
+        for (let T = 1; T <= N; T++) {
+            const fraction = (N - T + 1) / S_y;
+            const D_t = base * fraction;
             bv -= D_t;
 
             const tr = document.createElement('tr');
@@ -586,20 +599,20 @@
         document.getElementById('syd-result').style.display = 'block';
     }
 
-    // 4. Units of Production (R_U = (C - S) / U_T, D_t = U_t * R_U)
+    // 4. Units of Production
     function calcUOP() {
         const C = parseFloat(document.getElementById('uop-c').value);
         const S = parseFloat(document.getElementById('uop-s').value) || 0;
-        const U_T = parseFloat(document.getElementById('uop-ut').value); // U_T ประมาณการผลผลิตทั้งหมด
-        const U_t = parseFloat(document.getElementById('uop-ut-cur').value); // U_t ผลผลิตงวดนี้
+        const U_T = parseFloat(document.getElementById('uop-ut').value);
+        const U_t = parseFloat(document.getElementById('uop-ut-cur').value);
 
         if (!C || !U_T || U_T <= 0 || C < S || isNaN(U_t)) {
             alert('กรุณากรอกข้อมูลราคาทุน และจำนวนผลผลิตให้ถูกต้อง');
             return;
         }
 
-        const R_U = (C - S) / U_T; // R_U = (C - S) / U_T
-        const D_t = U_t * R_U; // D_t = U_t * R_U
+        const R_U = (C - S) / U_T;
+        const D_t = U_t * R_U;
 
         document.getElementById('uop-rate').innerText = fmt(R_U) + ' บาท/หน่วย';
         document.getElementById('uop-dep-cur').innerText = fmt(D_t) + ' บาท';

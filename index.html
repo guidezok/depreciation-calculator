@@ -13,7 +13,6 @@
             --text: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --accent: #f59e0b;
         }
 
         * {
@@ -276,7 +275,7 @@
                     <strong id="sl-annual-d">0.00</strong>
                 </div>
                 <div class="sum-card">
-                    <span>ราคาทุนตัดค่าเสื่อมได้</span>
+                    <span>ราคาทุนตัดค่าเสื่อมได้ (C - S)</span>
                     <strong id="sl-dep-base">0.00</strong>
                 </div>
             </div>
@@ -285,10 +284,10 @@
                     <thead>
                         <tr>
                             <th>ปีที่ (t)</th>
-                            <th>ราคาต้นปี (BV)</th>
+                            <th>ราคาทุน (C)</th>
                             <th>ค่าเสื่อมราคาประจำปี (D)</th>
                             <th>ค่าเสื่อมราคาสะสม</th>
-                            <th>มูลค่าตามบัญชีปลายปี (BV)</th>
+                            <th>มูลค่าตามบัญชีปลายปี</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -301,8 +300,8 @@
     <div id="ddb" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Double-Declining Balance Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> เป็นการคิดค่าเสื่อมแบบอัตราเร่ง (Accelerated) โดยปีแรกๆ จะบันทึกค่าเสื่อมราคาสูง แล้วค่อยๆ ลดลงในปีถัดๆ ไป (ใช้อัตรา 2/N คูณด้วยมูลค่าตามบัญชีต้นปี)</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีประสิทธิภาพการทำงานสูงสุดในช่วงแรก และเสื่อมสภาพ/ล้าสมัยเร็ว เช่น รถยนต์ขนส่ง, เครื่องจักรโรงงาน, เครื่องบิน, อุปกรณ์เทคโนโลยี</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> เป็นการคิดค่าเสื่อมแบบอัตราเร่ง โดยปีแรกๆ จะบันทึกค่าเสื่อมราคาสูง แล้วค่อยๆ ลดลงในปีถัดๆ ไป</p>
+            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีประสิทธิภาพการทำงานสูงสุดในช่วงแรก และเสื่อมสภาพ/ล้าสมัยเร็ว เช่น รถยนต์ขนส่ง, เครื่องจักรโรงงาน, เครื่องบิน</p>
         </div>
 
         <div class="form-grid">
@@ -328,7 +327,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมคงที่ (R = 2/N)</span>
+                    <span>อัตราค่าเสื่อมราคาคงที่ (R = 2/N)</span>
                     <strong id="ddb-rate">0%</strong>
                 </div>
             </div>
@@ -337,11 +336,11 @@
                     <thead>
                         <tr>
                             <th>ปีที่ (t)</th>
-                            <th>ราคาต้นปี (BV<sub>t-1</sub>)</th>
-                            <th>อัตรา (R)</th>
-                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub>)</th>
+                            <th>มูลค่าต้นปี (BV<sub>t-1</sub>)</th>
+                            <th>อัตราคงที่ (R)</th>
+                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub> = BV<sub>t-1</sub> × R)</th>
                             <th>ค่าเสื่อมราคาสะสม</th>
-                            <th>มูลค่าตามบัญชีปลายปี (BV<sub>t</sub>)</th>
+                            <th>มูลค่าตามบัญชีปลายปี</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -354,7 +353,7 @@
     <div id="syd" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Sum-of-the-Years'-Digits Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาแบบอัตราเร่งเช่นกัน โดยสัดส่วนค่าเสื่อมจะคำนวณจากเศษส่วนของอายุการใช้งานที่เหลืออยู่ หารด้วยผลรวมตัวเลขจำนวนปี (S<sub>y</sub> = N(N+1)/2)</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาแบบอัตราเร่ง โดยคำนวณจากสัดส่วนของอายุการใช้งานที่เหลืออยู่ หารด้วยผลรวมจำนวนปีทั้งหมด (S<sub>y</sub>)</p>
             <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่ลดมูลค่าลงอย่างรวดเร็วในช่วงแรก หรือล้าสมัยง่าย เช่น คอมพิวเตอร์, รถยนต์, อุปกรณ์เทคโนโลยี</p>
         </div>
 
@@ -381,7 +380,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>ผลรวมจำนวนปี (S<sub>y</sub>)</span>
+                    <span>ผลรวมจำนวนปีทั้งหมด S<sub>y</sub> = N(N+1)/2</span>
                     <strong id="syd-sum">0</strong>
                 </div>
             </div>
@@ -389,11 +388,11 @@
                 <table id="syd-table">
                     <thead>
                         <tr>
-                            <th>ปีที่ (t)</th>
-                            <th>สัดส่วน (N-t+1)/S<sub>y</sub></th>
+                            <th>ปีที่กำลังคำนวณ (T)</th>
+                            <th>สัดส่วน (N - t + 1) / S<sub>y</sub></th>
+                            <th>มูลค่าต้นทุนหักซาก (C - S)</th>
                             <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub>)</th>
-                            <th>ค่าเสื่อมราคาสะสม</th>
-                            <th>มูลค่าตามบัญชีปลายปี (BV)</th>
+                            <th>มูลค่าตามบัญชีปลายปี</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -406,8 +405,8 @@
     <div id="uop" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Units of Production Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาตามปริมาณการใช้งานหรือการผลิตจริง ไม่ขึ้นกับระยะเวลาปี โดยคำนวณอัตราต่อหน่วยก่อน แล้วคูณกับจำนวนหน่วยที่ผลิตได้ในแต่ละช่วง</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่การเสื่อมสภาพขึ้นอยู่กับการใช้งานจริงมากกว่าเวลา เช่น เครื่องจักรในโรงงาน, รถยนต์ขนส่ง (คิดตามระยะทางกิโลเมตร), เครื่องบิน (คิดตามชั่วโมงบิน)</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาตามปริมาณการใช้งานจริง คำนวณอัตราต่อหน่วยผลผลิต (R<sub>U</sub>) ก่อน แล้วคูณจำนวนผลผลิตประจำงวด (U<sub>t</sub>)</p>
+            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่การเสื่อมสภาพขึ้นอยู่กับการใช้งานจริงมากกว่าระยะเวลา เช่น เครื่องจักรในโรงงาน, รถยนต์ขนส่ง (คิดตามระยะทาง)</p>
         </div>
 
         <div class="form-grid">
@@ -420,11 +419,11 @@
                 <input type="number" id="uop-s" placeholder="เช่น 10000">
             </div>
             <div class="form-group">
-                <label>ประมาณการผลิตทั้งหมด (U<sub>T</sub>) [หน่วย/ชม.]:</label>
+                <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย/ชม.]:</label>
                 <input type="number" id="uop-ut" placeholder="เช่น 50000">
             </div>
             <div class="form-group">
-                <label>ผลผลิตงวดนี้ (U<sub>t</sub>) [หน่วย/ชม.]:</label>
+                <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย/ชม.]:</label>
                 <input type="number" id="uop-ut-cur" placeholder="เช่น 10000">
             </div>
         </div>
@@ -437,11 +436,11 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมต่อหน่วย (R<sub>U</sub>)</span>
+                    <span>อัตราค่าเสื่อมต่อหน่วยผลผลิต R<sub>U</sub> = (C - S) / U<sub>T</sub></span>
                     <strong id="uop-rate">0.00 บาท/หน่วย</strong>
                 </div>
                 <div class="sum-card">
-                    <span>ค่าเสื่อมราคางวดนี้ (D<sub>t</sub>)</span>
+                    <span>ค่าเสื่อมราคาประจำปี t (D<sub>t</sub> = U<sub>t</sub> × R<sub>U</sub>)</span>
                     <strong id="uop-dep-cur">0.00 บาท</strong>
                 </div>
             </div>
@@ -488,7 +487,7 @@
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${t}</td>
-                <td>${fmt(bv + D)}</td>
+                <td>${fmt(C)}</td>
                 <td>${fmt(D)}</td>
                 <td>${fmt(accumD)}</td>
                 <td>${fmt(bv)}</td>
@@ -499,7 +498,7 @@
         document.getElementById('sl-result').style.display = 'block';
     }
 
-    // 2. Double-Declining
+    // 2. Double-Declining Balance (R = 2/N, D_t = BV_{t-1} * R)
     function calcDDB() {
         const C = parseFloat(document.getElementById('ddb-c').value);
         const S = parseFloat(document.getElementById('ddb-s').value) || 0;
@@ -510,43 +509,45 @@
             return;
         }
 
-        const R = 2 / N;
+        const R = 2 / N; // R = 2 / N
         document.getElementById('ddb-rate').innerText = (R * 100).toFixed(2) + '%';
 
         const tbody = document.querySelector('#ddb-table tbody');
         tbody.innerHTML = '';
 
-        let bv = C;
+        let BV_t_minus_1 = C; // BV_{t-1} คือ มูลค่าตามบัญชีเหลืออยู่ ณ ต้นปีนี้
         let accumD = 0;
 
         for (let t = 1; t <= N; t++) {
-            let d_t = bv * R;
+            let D_t = BV_t_minus_1 * R; // D_t = BV_{t-1} * R
             
-            // Adjust last year or if BV falls below Salvage Value S
-            if (bv - d_t < S || t === N) {
-                d_t = Math.max(0, bv - S);
+            // ปรับมูลค่าปีสุดท้ายไม่ให้ต่ำกว่ามูลค่าซาก (S)
+            if (BV_t_minus_1 - D_t < S || t === N) {
+                D_t = Math.max(0, BV_t_minus_1 - S);
             }
 
-            const startBV = bv;
-            accumD += d_t;
-            bv -= d_t;
+            const start_BV = BV_t_minus_1;
+            accumD += D_t;
+            const BV_t = BV_t_minus_1 - D_t; // มูลค่าปลายปี
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${t}</td>
-                <td>${fmt(startBV)}</td>
+                <td>${fmt(start_BV)}</td>
                 <td>${(R * 100).toFixed(2)}%</td>
-                <td>${fmt(d_t)}</td>
+                <td>${fmt(D_t)}</td>
                 <td>${fmt(accumD)}</td>
-                <td>${fmt(bv)}</td>
+                <td>${fmt(BV_t)}</td>
             `;
             tbody.appendChild(tr);
+
+            BV_t_minus_1 = BV_t; // อัปเดตมูลค่าต้นปีหน้า
         }
 
         document.getElementById('ddb-result').style.display = 'block';
     }
 
-    // 3. Sum of the Years' Digits
+    // 3. Sum of the Years' Digits (S_y = N(N+1)/2, D_t = (C - S) * (N - t + 1)/S_y)
     function calcSYD() {
         const C = parseFloat(document.getElementById('syd-c').value);
         const S = parseFloat(document.getElementById('syd-s').value) || 0;
@@ -557,28 +558,26 @@
             return;
         }
 
-        const Sy = (N * (N + 1)) / 2;
-        document.getElementById('syd-sum').innerText = Sy;
+        const S_y = (N * (N + 1)) / 2; // S_y = N * (N + 1) / 2
+        document.getElementById('syd-sum').innerText = S_y;
 
         const tbody = document.querySelector('#syd-table tbody');
         tbody.innerHTML = '';
 
         let bv = C;
-        let accumD = 0;
-        const depBase = C - S;
+        const base = C - S; // (C - S)
 
-        for (let t = 1; t <= N; t++) {
-            const fraction = (N - t + 1) / Sy;
-            const d_t = depBase * fraction;
-            accumD += d_t;
-            bv -= d_t;
+        for (let T = 1; T <= N; T++) { // T คือ ปีที่กำลังคำนวณ
+            const fraction = (N - T + 1) / S_y; // (N - t + 1) / S_y
+            const D_t = base * fraction; // D_t = (C - S) * ((N - t + 1) / S_y)
+            bv -= D_t;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${t}</td>
-                <td>${N - t + 1}/${Sy} (${(fraction * 100).toFixed(1)}%)</td>
-                <td>${fmt(d_t)}</td>
-                <td>${fmt(accumD)}</td>
+                <td>${T}</td>
+                <td>${N - T + 1}/${S_y} (${(fraction * 100).toFixed(1)}%)</td>
+                <td>${fmt(base)}</td>
+                <td>${fmt(D_t)}</td>
                 <td>${fmt(bv)}</td>
             `;
             tbody.appendChild(tr);
@@ -587,23 +586,23 @@
         document.getElementById('syd-result').style.display = 'block';
     }
 
-    // 4. Units of Production
+    // 4. Units of Production (R_U = (C - S) / U_T, D_t = U_t * R_U)
     function calcUOP() {
         const C = parseFloat(document.getElementById('uop-c').value);
         const S = parseFloat(document.getElementById('uop-s').value) || 0;
-        const UT = parseFloat(document.getElementById('uop-ut').value);
-        const Ut = parseFloat(document.getElementById('uop-ut-cur').value);
+        const U_T = parseFloat(document.getElementById('uop-ut').value); // U_T ประมาณการผลผลิตทั้งหมด
+        const U_t = parseFloat(document.getElementById('uop-ut-cur').value); // U_t ผลผลิตงวดนี้
 
-        if (!C || !UT || UT <= 0 || C < S || Ut === undefined) {
-            alert('กรุณากรอกข้อมูลราคาทุน และประมาณการผลิตให้ถูกต้อง');
+        if (!C || !U_T || U_T <= 0 || C < S || isNaN(U_t)) {
+            alert('กรุณากรอกข้อมูลราคาทุน และจำนวนผลผลิตให้ถูกต้อง');
             return;
         }
 
-        const RU = (C - S) / UT;
-        const Dt = Ut * RU;
+        const R_U = (C - S) / U_T; // R_U = (C - S) / U_T
+        const D_t = U_t * R_U; // D_t = U_t * R_U
 
-        document.getElementById('uop-rate').innerText = fmt(RU) + ' บาท/หน่วย';
-        document.getElementById('uop-dep-cur').innerText = fmt(Dt) + ' บาท';
+        document.getElementById('uop-rate').innerText = fmt(R_U) + ' บาท/หน่วย';
+        document.getElementById('uop-dep-cur').innerText = fmt(D_t) + ' บาท';
 
         document.getElementById('uop-result').style.display = 'block';
     }

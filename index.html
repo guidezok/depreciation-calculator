@@ -545,7 +545,32 @@
         </div>
     </div>
 </div>
-
+<!-- 5. ส่วนแสดงประวัติการคำนวณ (แทรกส่วนนี้ลงไป) -->
+    <div class="calculator-card" style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="color: var(--primary);">📜 ประวัติการคำนวณล่าสุด</h3>
+            <button onclick="clearHistory()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">ล้างประวัติ</button>
+        </div>
+        <div class="table-container">
+            <table id="history-table">
+                <thead>
+                    <tr>
+                        <th>เวลา</th>
+                        <th>วิธีคำนวณ</th>
+                        <th>ราคาทุน (C)</th>
+                        <th>มูลค่าซาก (S)</th>
+                        <th>ผลการคำนวณ</th>
+                    </tr>
+                </thead>
+                <tbody id="history-list">
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted);">ยังไม่มีประวัติการคำนวณ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 <script>
     function fmt(num) {
         return num.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -594,6 +619,7 @@
         }
 
         document.getElementById('sl-result').style.display = 'block';
+        addHistory('วิธีเส้นตรง (SL)', C, S, `ค่าเสื่อมปีละ ${fmt(D)} บาท`);
     }
 
     // 2. Double-Declining Balance
@@ -642,6 +668,7 @@
         }
 
         document.getElementById('ddb-result').style.display = 'block';
+        addHistory('วิธียอดลดลงทวีคูณ (DDB)', C, S, `อัตราเสื่อม ${(R * 100).toFixed(2)}%`);
     }
 
     // 3. Sum of the Years' Digits
@@ -681,6 +708,7 @@
         }
 
         document.getElementById('syd-result').style.display = 'block';
+        addHistory('วิธีผลรวมจำนวนปี (SYD)', C, S, `ผลรวมปี = ${S_y}`);
     }
 
     // 4. Units of Production
@@ -702,6 +730,44 @@
         document.getElementById('uop-dep-cur').innerText = fmt(D_t) + ' บาท';
 
         document.getElementById('uop-result').style.display = 'block';
+        addHistory('วิธีตามผลผลิต (UOP)', C, S, `งวดนี้ ${fmt(D_t)} บาท`);
+    }
+    // === ฟังก์ชันสำหรับจัดการประวัติการคำนวณ ===
+    let calcHistory = [];
+
+    function addHistory(methodName, C, S, resultText) {
+        const time = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+        
+        // เพิ่มข้อมูลไว้แถวบนสุด
+        calcHistory.unshift({ time, methodName, C: fmt(C), S: fmt(S), resultText });
+        
+        // เก็บไว้สูงสุด 10 รายการล่าสุด
+        if (calcHistory.length > 10) calcHistory.pop();
+        
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const tbody = document.getElementById('history-list');
+        if (calcHistory.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">ยังไม่มีประวัติการคำนวณ</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = calcHistory.map(item => `
+            <tr>
+                <td style="text-align: center;">${item.time}</td>
+                <td style="text-align: center; font-weight: 600;">${item.methodName}</td>
+                <td>${item.C}</td>
+                <td>${item.S}</td>
+                <td style="color: var(--primary); font-weight: 600;">${item.resultText}</td>
+            </tr>
+        `).join('');
+    }
+
+    function clearHistory() {
+        calcHistory = [];
+        renderHistory();
     }
 </script>
 

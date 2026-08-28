@@ -3,30 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมคำนวณค่าเสื่อมราคา (Depreciation Calculator)</title>
+    <title>โปรแกรมคำนวณค่าเสื่อมราคา</title>
+    <!-- นำเข้าฟอนต์ Prompt และ Sarabun จาก Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #1e3a8a;
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
             --primary-light: #3b82f6;
-            --bg: #f8fafc;
+            --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 16px; /* ขยายขนาดฟอนต์พื้นฐาน */
             line-height: 1.6;
-            padding: 20px;
+            padding: 30px 15px;
+        }
+
+        h1, h2, h3, .tab-btn, .btn-calc {
+            font-family: 'Prompt', sans-serif; /* ใช้ฟอนต์ Prompt สำหรับหัวข้อและปุ่ม */
         }
 
         .container {
@@ -36,78 +47,111 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px 0;
-            border-bottom: 2px solid var(--border);
+            margin-bottom: 32px;
+            padding: 24px 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         header h1 {
             color: var(--primary);
-            font-size: 1.8rem;
+            font-size: 2.1rem; /* ขยายขนาดหัวข้อใหญ่ */
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1.1rem;
         }
 
+        /* จัดระเบียบ Tabs ใหม่ */
         .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* จัดเป็น 2 คอลัมน์สมดุลกัน */
+            gap: 12px;
             margin-bottom: 24px;
-            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .tabs {
+                grid-template-columns: repeat(4, 1fr); /* จอใหญ่แสดงเรียงกัน 4 ปุ่มพอดี */
+            }
         }
 
         .tab-btn {
-            padding: 10px 18px;
+            padding: 14px 16px;
             background: #e2e8f0;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid transparent;
+            border-radius: 12px;
             cursor: pointer;
+            font-size: 0.98rem;
             font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .tab-btn:hover {
+            background: #cbd5e1;
             color: var(--text);
-            transition: all 0.2s ease;
+            transform: translateY(-2px);
         }
 
         .tab-btn.active {
             background: var(--primary);
-            color: white;
+            color: #ffffff;
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
         }
 
         .calculator-card {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
             margin-bottom: 24px;
         }
 
         .info-box {
             background: #eff6ff;
-            border-left: 4px solid var(--primary-light);
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 24px;
+            border-left: 5px solid var(--primary-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 28px;
         }
 
         .info-box h3 {
             color: var(--primary);
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            font-size: 1.25rem;
+            margin-bottom: 10px;
         }
 
         .info-box p {
-            font-size: 0.92rem;
-            margin-bottom: 6px;
+            font-size: 1.05rem; /* ขยายขนาดคำอธิบาย */
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .formula-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: inline-block;
+            margin: 2px 0;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group {
@@ -116,44 +160,48 @@
         }
 
         .form-group label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text);
         }
 
         .form-group input {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-family: 'Sarabun', sans-serif;
             outline: none;
+            transition: all 0.2s;
         }
 
         .form-group input:focus {
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
         }
 
         .btn-calc {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
         }
 
         .btn-calc:hover {
-            background: #1d4ed8;
+            background: var(--primary-hover);
+            transform: translateY(-1px);
         }
 
         .result-section {
-            margin-top: 24px;
+            margin-top: 28px;
             display: none;
         }
 
@@ -161,51 +209,52 @@
             background: #fffbe3;
             border: 1px solid #fef08a;
             color: #854d0e;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            font-weight: bold;
-            margin-bottom: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 24px;
             text-align: center;
         }
 
         .summary-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .sum-card {
             background: #f8fafc;
             border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
         }
 
         .sum-card span {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
+            margin-bottom: 4px;
         }
 
         .sum-card strong {
             display: block;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             color: var(--primary);
-            margin-top: 4px;
+            font-family: 'Prompt', sans-serif;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 16px;
-            font-size: 0.9rem;
+            font-size: 0.98rem;
         }
 
         th, td {
-            padding: 10px 12px;
+            padding: 12px 14px;
             border: 1px solid var(--border);
             text-align: right;
         }
@@ -214,6 +263,7 @@
             background: #f1f5f9;
             color: var(--text);
             font-weight: 600;
+            font-family: 'Prompt', sans-serif;
         }
 
         th:nth-child(1), td:nth-child(1) {
@@ -222,6 +272,8 @@
 
         .table-container {
             overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
     </style>
 </head>
@@ -229,15 +281,15 @@
 
 <div class="container">
     <header>
-        <h1>เครื่องมือคำนวณค่าเสื่อมราคา (Depreciation Calculator)</h1>
-        <p>คำนวณตามมาตรฐานการบัญชีและหลักวิศวกรรมการเงิน</p>
+        <h1>เครื่องมือคำนวณค่าเสื่อมราคา</h1>
+        <p>Depreciation Calculator — มาตรฐานการบัญชีและหลักวิศวกรรมการเงิน</p>
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('sl')">1. วิธีเส้นตรง (Straight-Line)</button>
-        <button class="tab-btn" onclick="switchTab('ddb')">2. วิธียอดลดลงทวีคูณ (Double-Declining)</button>
-        <button class="tab-btn" onclick="switchTab('syd')">3. วิธีผลรวมจำนวนปี (SYD)</button>
-        <button class="tab-btn" onclick="switchTab('uop')">4. วิธีตามจำนวนผลผลิต (Units of Production)</button>
+        <button class="tab-btn active" onclick="switchTab('sl')">1. วิธีเส้นตรง<br><small>(Straight-Line)</small></button>
+        <button class="tab-btn" onclick="switchTab('ddb')">2. วิธียอดลดลงทวีคูณ<br><small>(Double-Declining)</small></button>
+        <button class="tab-btn" onclick="switchTab('syd')">3. วิธีผลรวมจำนวนปี<br><small>(SYD)</small></button>
+        <button class="tab-btn" onclick="switchTab('uop')">4. วิธีตามจำนวนผลผลิต<br><small>(Units of Production)</small></button>
     </div>
 
     <!-- 1. STRAIGHT LINE -->
@@ -246,6 +298,7 @@
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Straight-Line Method)</h3>
             <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาเป็นจำนวนเงินเท่ากันทุกปีตลอดอายุการใช้งาน</p>
             <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีการใช้งานสม่ำเสมอ ประสิทธิภาพไม่ลดลงตามกาลเวลา เช่น อาคารสำนักงาน, เครื่องเรือน, อุปกรณ์สำนักงาน, สิทธิบัตร</p>
+            <p><strong>สมการคำนวณ:</strong> <span class="formula-badge">D = (C - S) / N</span></p>
         </div>
 
         <div class="form-grid">
@@ -300,8 +353,10 @@
     <div id="ddb" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Double-Declining Balance Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> เป็นการคิดค่าเสื่อมแบบอัตราเร่ง โดยปีแรกๆ จะบันทึกค่าเสื่อมราคาสูง แล้วค่อยๆ ลดลงในปีถัดๆ ไป</p>
-            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีประสิทธิภาพการทำงานสูงสุดในช่วงแรก และเสื่อมสภาพ/ล้าสมัยเร็ว เช่น รถยนต์ขนส่ง, เครื่องจักรโรงงาน, เครื่องบิน</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> เป็นการคิดค่าเสื่อมแบบอัตราเร่ง (Accelerated) โดยปีแรกๆ จะบันทึกค่าเสื่อมราคาสูง แล้วค่อยๆ ลดลงในปีถัดๆ ไป</p>
+            <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่มีประสิทธิภาพการทำงานสูงสุดในช่วงแรก และเสื่อมสภาพ/ล้าสมัยเร็ว เช่น รถยนต์ขนส่ง, เครื่องจักรโรงงาน, เครื่องบิน, อุปกรณ์เทคโนโลยี</p>
+            <p><strong>สมการอัตราเสื่อมราคาคงที่:</strong> <span class="formula-badge">R = 2 / N</span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = BV<sub>t-1</sub> × R</span></p>
         </div>
 
         <div class="form-grid">
@@ -327,7 +382,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมราคาคงที่ (R = 2/N)</span>
+                    <span>อัตราเสื่อมราคาคงที่ (R = 2/N)</span>
                     <strong id="ddb-rate">0%</strong>
                 </div>
             </div>
@@ -338,9 +393,9 @@
                             <th>ปีที่ (t)</th>
                             <th>มูลค่าต้นปี (BV<sub>t-1</sub>)</th>
                             <th>อัตราคงที่ (R)</th>
-                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub> = BV<sub>t-1</sub> × R)</th>
+                            <th>ค่าเสื่อมราคาประจำปี (D<sub>t</sub>)</th>
                             <th>ค่าเสื่อมราคาสะสม</th>
-                            <th>มูลค่าตามบัญชีปลายปี</th>
+                            <th>มูลค่าปลายปี (BV<sub>t</sub>)</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -353,8 +408,10 @@
     <div id="syd" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Sum-of-the-Years'-Digits Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาแบบอัตราเร่ง โดยคำนวณจากสัดส่วนของอายุการใช้งานที่เหลืออยู่ หารด้วยผลรวมจำนวนปีทั้งหมด (S<sub>y</sub>)</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาแบบอัตราเร่งเช่นกัน โดยสัดส่วนค่าเสื่อมจะคำนวณจากเศษส่วนของอายุการใช้งานที่เหลืออยู่ หารด้วยผลรวมตัวเลขจำนวนปี</p>
             <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่ลดมูลค่าลงอย่างรวดเร็วในช่วงแรก หรือล้าสมัยง่าย เช่น คอมพิวเตอร์, รถยนต์, อุปกรณ์เทคโนโลยี</p>
+            <p><strong>สมการผลรวมจำนวนปีทั้งหมด:</strong> <span class="formula-badge">S<sub>y</sub> = [N × (N + 1)] / 2</span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = (C - S) × [(N - t + 1) / S<sub>y</sub>]</span></p>
         </div>
 
         <div class="form-grid">
@@ -380,7 +437,7 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>ผลรวมจำนวนปีทั้งหมด S<sub>y</sub> = N(N+1)/2</span>
+                    <span>ผลรวมจำนวนปีทั้งหมด (S<sub>y</sub>)</span>
                     <strong id="syd-sum">0</strong>
                 </div>
             </div>
@@ -405,8 +462,10 @@
     <div id="uop" class="tab-content calculator-card" style="display:none;">
         <div class="info-box">
             <h3>คำแนะนำตามมาตรฐานการบัญชี (Units of Production Method)</h3>
-            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาตามปริมาณการใช้งานจริง คำนวณอัตราต่อหน่วยผลผลิต (R<sub>U</sub>) ก่อน แล้วคูณจำนวนผลผลิตประจำงวด (U<sub>t</sub>)</p>
+            <p><strong>ลักษณะค่าเสื่อม:</strong> คิดค่าเสื่อมราคาตามปริมาณการใช้งานจริง คำนวณอัตราต่อหน่วยผลผลิตก่อน แล้วคูณด้วยจำนวนผลผลิตประจำงวด</p>
             <p><strong>สินทรัพย์ที่เหมาะสม:</strong> สินทรัพย์ที่การเสื่อมสภาพขึ้นอยู่กับการใช้งานจริงมากกว่าระยะเวลา เช่น เครื่องจักรในโรงงาน, รถยนต์ขนส่ง (คิดตามระยะทาง)</p>
+            <p><strong>สมการอัตราค่าเสื่อมต่อหน่วย:</strong> <span class="formula-badge">R<sub>U</sub> = (C - S) / U<sub>T</sub></span></p>
+            <p><strong>สมการหาค่าเสื่อมปีที่ t:</strong> <span class="formula-badge">D<sub>t</sub> = U<sub>t</sub> × R<sub>U</sub></span></p>
         </div>
 
         <div class="form-grid">
@@ -419,11 +478,11 @@
                 <input type="number" id="uop-s" placeholder="เช่น 10000">
             </div>
             <div class="form-group">
-                <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย/ชม.]:</label>
+                <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย]:</label>
                 <input type="number" id="uop-ut" placeholder="เช่น 50000">
             </div>
             <div class="form-group">
-                <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย/ชม.]:</label>
+                <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย]:</label>
                 <input type="number" id="uop-ut-cur" placeholder="เช่น 10000">
             </div>
         </div>
@@ -436,11 +495,11 @@
             </div>
             <div class="summary-cards">
                 <div class="sum-card">
-                    <span>อัตราค่าเสื่อมต่อหน่วยผลผลิต R<sub>U</sub> = (C - S) / U<sub>T</sub></span>
+                    <span>อัตราค่าเสื่อมต่อหน่วย (R<sub>U</sub>)</span>
                     <strong id="uop-rate">0.00 บาท/หน่วย</strong>
                 </div>
                 <div class="sum-card">
-                    <span>ค่าเสื่อมราคาประจำปี t (D<sub>t</sub> = U<sub>t</sub> × R<sub>U</sub>)</span>
+                    <span>ค่าเสื่อมราคาประจำปี t (D<sub>t</sub>)</span>
                     <strong id="uop-dep-cur">0.00 บาท</strong>
                 </div>
             </div>
@@ -457,7 +516,7 @@
         document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).style.display = 'block';
-        event.target.classList.add('active');
+        event.currentTarget.classList.add('active');
     }
 
     // 1. Straight-Line
@@ -498,7 +557,7 @@
         document.getElementById('sl-result').style.display = 'block';
     }
 
-    // 2. Double-Declining Balance (R = 2/N, D_t = BV_{t-1} * R)
+    // 2. Double-Declining Balance
     function calcDDB() {
         const C = parseFloat(document.getElementById('ddb-c').value);
         const S = parseFloat(document.getElementById('ddb-s').value) || 0;
@@ -509,26 +568,25 @@
             return;
         }
 
-        const R = 2 / N; // R = 2 / N
+        const R = 2 / N;
         document.getElementById('ddb-rate').innerText = (R * 100).toFixed(2) + '%';
 
         const tbody = document.querySelector('#ddb-table tbody');
         tbody.innerHTML = '';
 
-        let BV_t_minus_1 = C; // BV_{t-1} คือ มูลค่าตามบัญชีเหลืออยู่ ณ ต้นปีนี้
+        let BV_t_minus_1 = C;
         let accumD = 0;
 
         for (let t = 1; t <= N; t++) {
-            let D_t = BV_t_minus_1 * R; // D_t = BV_{t-1} * R
+            let D_t = BV_t_minus_1 * R;
             
-            // ปรับมูลค่าปีสุดท้ายไม่ให้ต่ำกว่ามูลค่าซาก (S)
             if (BV_t_minus_1 - D_t < S || t === N) {
                 D_t = Math.max(0, BV_t_minus_1 - S);
             }
 
             const start_BV = BV_t_minus_1;
             accumD += D_t;
-            const BV_t = BV_t_minus_1 - D_t; // มูลค่าปลายปี
+            const BV_t = BV_t_minus_1 - D_t;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -541,13 +599,13 @@
             `;
             tbody.appendChild(tr);
 
-            BV_t_minus_1 = BV_t; // อัปเดตมูลค่าต้นปีหน้า
+            BV_t_minus_1 = BV_t;
         }
 
         document.getElementById('ddb-result').style.display = 'block';
     }
 
-    // 3. Sum of the Years' Digits (S_y = N(N+1)/2, D_t = (C - S) * (N - t + 1)/S_y)
+    // 3. Sum of the Years' Digits
     function calcSYD() {
         const C = parseFloat(document.getElementById('syd-c').value);
         const S = parseFloat(document.getElementById('syd-s').value) || 0;
@@ -558,18 +616,18 @@
             return;
         }
 
-        const S_y = (N * (N + 1)) / 2; // S_y = N * (N + 1) / 2
+        const S_y = (N * (N + 1)) / 2;
         document.getElementById('syd-sum').innerText = S_y;
 
         const tbody = document.querySelector('#syd-table tbody');
         tbody.innerHTML = '';
 
         let bv = C;
-        const base = C - S; // (C - S)
+        const base = C - S;
 
-        for (let T = 1; T <= N; T++) { // T คือ ปีที่กำลังคำนวณ
-            const fraction = (N - T + 1) / S_y; // (N - t + 1) / S_y
-            const D_t = base * fraction; // D_t = (C - S) * ((N - t + 1) / S_y)
+        for (let T = 1; T <= N; T++) {
+            const fraction = (N - T + 1) / S_y;
+            const D_t = base * fraction;
             bv -= D_t;
 
             const tr = document.createElement('tr');
@@ -586,20 +644,20 @@
         document.getElementById('syd-result').style.display = 'block';
     }
 
-    // 4. Units of Production (R_U = (C - S) / U_T, D_t = U_t * R_U)
+    // 4. Units of Production
     function calcUOP() {
         const C = parseFloat(document.getElementById('uop-c').value);
         const S = parseFloat(document.getElementById('uop-s').value) || 0;
-        const U_T = parseFloat(document.getElementById('uop-ut').value); // U_T ประมาณการผลผลิตทั้งหมด
-        const U_t = parseFloat(document.getElementById('uop-ut-cur').value); // U_t ผลผลิตงวดนี้
+        const U_T = parseFloat(document.getElementById('uop-ut').value);
+        const U_t = parseFloat(document.getElementById('uop-ut-cur').value);
 
         if (!C || !U_T || U_T <= 0 || C < S || isNaN(U_t)) {
             alert('กรุณากรอกข้อมูลราคาทุน และจำนวนผลผลิตให้ถูกต้อง');
             return;
         }
 
-        const R_U = (C - S) / U_T; // R_U = (C - S) / U_T
-        const D_t = U_t * R_U; // D_t = U_t * R_U
+        const R_U = (C - S) / U_T;
+        const D_t = U_t * R_U;
 
         document.getElementById('uop-rate').innerText = fmt(R_U) + ' บาท/หน่วย';
         document.getElementById('uop-dep-cur').innerText = fmt(D_t) + ' บาท';

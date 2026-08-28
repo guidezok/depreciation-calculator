@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>โปรแกรมคำนวณค่าเสื่อมราคา</title>
     <!-- นำเข้าฟอนต์ Prompt และ Sarabun จาก Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,24 +31,25 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Sarabun', sans-serif;
-            font-size: 16px; /* ขยายขนาดฟอนต์พื้นฐาน */
+            font-size: 16px;
             line-height: 1.6;
-            padding: 30px 15px;
+            padding: 16px;
         }
 
         h1, h2, h3, .tab-btn, .btn-calc {
-            font-family: 'Prompt', sans-serif; /* ใช้ฟอนต์ Prompt สำหรับหัวข้อและปุ่ม */
+            font-family: 'Prompt', sans-serif;
         }
 
         .container {
+            width: 100%;
             max-width: 1000px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 32px;
-            padding: 24px 20px;
+            margin-bottom: 20px;
+            padding: 20px 16px;
             background: var(--card-bg);
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
@@ -56,48 +57,52 @@
 
         header h1 {
             color: var(--primary);
-            font-size: 2.1rem; /* ขยายขนาดหัวข้อใหญ่ */
+            font-size: clamp(1.4rem, 4vw, 2.1rem); /* ย่อขยายขนาดตามหน้าจอ */
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
         }
 
-        /* จัดระเบียบ Tabs ใหม่ */
+        /* ระบบ Tabs ยืดหยุ่นรองรับทุกหน้าจอ */
         .tabs {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* จัดเป็น 2 คอลัมน์สมดุลกัน */
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .tabs {
-                grid-template-columns: repeat(4, 1fr); /* จอใหญ่แสดงเรียงกัน 4 ปุ่มพอดี */
-            }
+            grid-template-columns: repeat(2, 1fr); /* เริ่มต้น 2 คอลัมน์สำหรับมือถือ */
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .tab-btn {
-            padding: 14px 16px;
+            padding: 12px 10px;
             background: #e2e8f0;
             border: 2px solid transparent;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 0.98rem;
+            font-size: clamp(0.85rem, 2vw, 0.98rem);
             font-weight: 600;
             color: var(--text-muted);
             transition: all 0.25s ease;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tab-btn small {
+            font-size: 0.8em;
+            opacity: 0.85;
+            font-weight: normal;
         }
 
         .tab-btn:hover {
             background: #cbd5e1;
             color: var(--text);
-            transform: translateY(-2px);
         }
 
         .tab-btn.active {
@@ -110,27 +115,27 @@
         .calculator-card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 32px;
+            padding: 20px;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .info-box {
             background: #eff6ff;
-            border-left: 5px solid var(--primary-light);
-            padding: 20px;
+            border-left: 4px solid var(--primary-light);
+            padding: 16px;
             border-radius: 8px;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
         }
 
         .info-box h3 {
             color: var(--primary);
-            font-size: 1.25rem;
-            margin-bottom: 10px;
+            font-size: clamp(1.05rem, 3vw, 1.25rem);
+            margin-bottom: 8px;
         }
 
         .info-box p {
-            font-size: 1.05rem; /* ขยายขนาดคำอธิบาย */
+            font-size: clamp(0.9rem, 2.5vw, 1.05rem);
             margin-bottom: 8px;
             color: #334155;
         }
@@ -138,20 +143,21 @@
         .formula-badge {
             background: #dbeafe;
             color: #1e40af;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 6px;
             font-family: monospace;
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
             display: inline-block;
             margin: 2px 0;
+            word-break: break-word;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr; /* 1 คอลัมน์บนมือถือ */
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -160,9 +166,9 @@
         }
 
         .form-group label {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text);
         }
 
@@ -170,15 +176,16 @@
             padding: 12px 14px;
             border: 1.5px solid var(--border);
             border-radius: 8px;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-family: 'Sarabun', sans-serif;
             outline: none;
             transition: all 0.2s;
+            width: 100%;
         }
 
         .form-group input:focus {
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
         .btn-calc {
@@ -188,20 +195,20 @@
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-calc:hover {
             background: var(--primary-hover);
-            transform: translateY(-1px);
         }
 
         .result-section {
-            margin-top: 28px;
+            margin-top: 24px;
             display: none;
         }
 
@@ -209,54 +216,64 @@
             background: #fffbe3;
             border: 1px solid #fef08a;
             color: #854d0e;
-            padding: 14px;
+            padding: 12px;
             border-radius: 10px;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: center;
+            line-height: 1.5;
         }
 
         .summary-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr; /* 1 คอลัมน์บนมือถือ */
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .sum-card {
             background: #f8fafc;
             border: 1px solid var(--border);
-            padding: 20px;
+            padding: 16px;
             border-radius: 12px;
             text-align: center;
         }
 
         .sum-card span {
             display: block;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 4px;
         }
 
         .sum-card strong {
             display: block;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--primary);
             font-family: 'Prompt', sans-serif;
         }
 
+        /* ตารางรองรับการเลื่อนซ้าย-ขวาบนมือถือ */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
             width: 100%;
+            min-width: 500px; /* ป้องกันตารางบีบตัวเกินไปบนจอเล็ก */
             border-collapse: collapse;
-            margin-top: 16px;
-            font-size: 0.98rem;
+            font-size: 0.92rem;
         }
 
         th, td {
-            padding: 12px 14px;
+            padding: 10px 12px;
             border: 1px solid var(--border);
             text-align: right;
+            white-space: nowrap;
         }
 
         th {
@@ -270,10 +287,32 @@
             text-align: center;
         }
 
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+        /* --- Media Queries สำหรับหน้าจอใหญ่ขึ้น (แท็บเล็ต/iPad และคอมพิวเตอร์) --- */
+        @media (min-width: 640px) {
+            body {
+                padding: 24px;
+            }
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 850px) {
+            body {
+                padding: 32px 20px;
+            }
+            .tabs {
+                grid-template-columns: repeat(4, 1fr); /* แสดง 4 ปุ่มเรียงแถวเดียวเมื่อจอใหญ่พอ */
+            }
+            .calculator-card {
+                padding: 32px;
+            }
+            .form-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -286,10 +325,10 @@
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('sl')">1. วิธีเส้นตรง<br><small>(Straight-Line)</small></button>
-        <button class="tab-btn" onclick="switchTab('ddb')">2. วิธียอดลดลงทวีคูณ<br><small>(Double-Declining)</small></button>
-        <button class="tab-btn" onclick="switchTab('syd')">3. วิธีผลรวมจำนวนปี<br><small>(SYD)</small></button>
-        <button class="tab-btn" onclick="switchTab('uop')">4. วิธีตามจำนวนผลผลิต<br><small>(Units of Production)</small></button>
+        <button class="tab-btn active" onclick="switchTab(event, 'sl')">1. วิธีเส้นตรง<small>(Straight-Line)</small></button>
+        <button class="tab-btn" onclick="switchTab(event, 'ddb')">2. วิธียอดลดลงทวีคูณ<small>(Double-Declining)</small></button>
+        <button class="tab-btn" onclick="switchTab(event, 'syd')">3. วิธีผลรวมจำนวนปี<small>(SYD)</small></button>
+        <button class="tab-btn" onclick="switchTab(event, 'uop')">4. วิธีตามจำนวนผลผลิต<small>(Units of Production)</small></button>
     </div>
 
     <!-- 1. STRAIGHT LINE -->
@@ -304,15 +343,15 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="sl-c" placeholder="เช่น 100000">
+                <input type="number" id="sl-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="sl-s" placeholder="เช่น 10000">
+                <input type="number" id="sl-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
-                <input type="number" id="sl-n" placeholder="เช่น 5">
+                <input type="number" id="sl-n" placeholder="เช่น 5" inputmode="numeric">
             </div>
         </div>
 
@@ -362,15 +401,15 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="ddb-c" placeholder="เช่น 100000">
+                <input type="number" id="ddb-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="ddb-s" placeholder="เช่น 10000">
+                <input type="number" id="ddb-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
-                <input type="number" id="ddb-n" placeholder="เช่น 5">
+                <input type="number" id="ddb-n" placeholder="เช่น 5" inputmode="numeric">
             </div>
         </div>
 
@@ -417,15 +456,15 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="syd-c" placeholder="เช่น 100000">
+                <input type="number" id="syd-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="syd-s" placeholder="เช่น 10000">
+                <input type="number" id="syd-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
-                <input type="number" id="syd-n" placeholder="เช่น 5">
+                <input type="number" id="syd-n" placeholder="เช่น 5" inputmode="numeric">
             </div>
         </div>
 
@@ -471,19 +510,19 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="uop-c" placeholder="เช่น 100000">
+                <input type="number" id="uop-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="uop-s" placeholder="เช่น 10000">
+                <input type="number" id="uop-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย]:</label>
-                <input type="number" id="uop-ut" placeholder="เช่น 50000">
+                <input type="number" id="uop-ut" placeholder="เช่น 50000" inputmode="numeric">
             </div>
             <div class="form-group">
                 <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย]:</label>
-                <input type="number" id="uop-ut-cur" placeholder="เช่น 10000">
+                <input type="number" id="uop-ut-cur" placeholder="เช่น 10000" inputmode="numeric">
             </div>
         </div>
 
@@ -512,7 +551,7 @@
         return num.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function switchTab(tabId) {
+    function switchTab(event, tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).style.display = 'block';

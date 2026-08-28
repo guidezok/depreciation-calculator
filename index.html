@@ -343,11 +343,11 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="sl-c" placeholder="เช่น 100000" inputmode="decimal">
+                <input type="text" class="currency-input" id="sl-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="sl-s" placeholder="เช่น 10000" inputmode="decimal">
+                <input type="text" class="currency-input" id="sl-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
@@ -401,11 +401,11 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="ddb-c" placeholder="เช่น 100000" inputmode="decimal">
+                <input type="text" class="currency-input" id="ddb-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="ddb-s" placeholder="เช่น 10000" inputmode="decimal">
+                <input type="text" class="currency-input" id="ddb-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
@@ -456,11 +456,11 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="syd-c" placeholder="เช่น 100000" inputmode="decimal">
+                <input type="text" class="currency-input" id="syd-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="syd-s" placeholder="เช่น 10000" inputmode="decimal">
+                <input type="text" class="currency-input" id="syd-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>อายุการใช้งาน (N) [ปี]:</label>
@@ -510,11 +510,11 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>ราคาทุนสินทรัพย์ (C) [บาท]:</label>
-                <input type="number" id="uop-c" placeholder="เช่น 100000" inputmode="decimal">
+                <input type="text" class="currency-input" id="uop-c" placeholder="เช่น 100000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>มูลค่าซาก (S) [บาท]:</label>
-                <input type="number" id="uop-s" placeholder="เช่น 10000" inputmode="decimal">
+                <input type="text" class="currency-input" id="uop-s" placeholder="เช่น 10000" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย]:</label>
@@ -575,7 +575,35 @@
     function fmt(num) {
         return num.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
+    
+// === สคริปต์จัดฟอร์แมตตัวเลขใส่อัตโนมัติ (Comma) ===
+    document.addEventListener('input', function (e) {
+        if (e.target.classList.contains('currency-input')) {
+            let cursorPosition = e.target.selectionStart;
+            let originalLength = e.target.value.length;
+            
+            let value = e.target.value.replace(/[^0-9.]/g, '');
+            let parts = value.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            if (parts[1] !== undefined) {
+                parts[1] = parts[1].slice(0, 2);
+            }
+            
+            e.target.value = parts.join('.');
+            
+            let newLength = e.target.value.length;
+            cursorPosition += (newLength - originalLength);
+            e.target.setSelectionRange(cursorPosition, cursorPosition);
+        }
+    });
 
+    // ฟังก์ชันช่วยดึงค่าตัวเลขเพื่อนำไปคำนวณ (เอาลูกน้ำออก)
+    function getNum(id) {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        return parseFloat(el.value.replace(/,/g, '')) || 0;
+    }
     function switchTab(event, tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -585,8 +613,8 @@
 
     // 1. Straight-Line
     function calcSL() {
-        const C = parseFloat(document.getElementById('sl-c').value);
-        const S = parseFloat(document.getElementById('sl-s').value) || 0;
+        const C = getNum('sl-c');
+        const S = getNum('sl-s');
         const N = parseInt(document.getElementById('sl-n').value);
 
         if (!C || !N || N <= 0 || C < S) {
@@ -624,8 +652,8 @@
 
     // 2. Double-Declining Balance
     function calcDDB() {
-        const C = parseFloat(document.getElementById('ddb-c').value);
-        const S = parseFloat(document.getElementById('ddb-s').value) || 0;
+        const C = getNum('ddb-c');
+        const S = getNum('ddb-s');
         const N = parseInt(document.getElementById('ddb-n').value);
 
         if (!C || !N || N <= 0 || C < S) {
@@ -673,8 +701,8 @@
 
     // 3. Sum of the Years' Digits
     function calcSYD() {
-        const C = parseFloat(document.getElementById('syd-c').value);
-        const S = parseFloat(document.getElementById('syd-s').value) || 0;
+        const C = getNum('syd-c');
+        const S = getNum('syd-s');
         const N = parseInt(document.getElementById('syd-n').value);
 
         if (!C || !N || N <= 0 || C < S) {
@@ -713,8 +741,8 @@
 
     // 4. Units of Production
     function calcUOP() {
-        const C = parseFloat(document.getElementById('uop-c').value);
-        const S = parseFloat(document.getElementById('uop-s').value) || 0;
+        const C = getNum('uop-c');
+        const S = getNum('uop-s');
         const U_T = parseFloat(document.getElementById('uop-ut').value);
         const U_t = parseFloat(document.getElementById('uop-ut-cur').value);
 

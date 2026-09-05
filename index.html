@@ -518,11 +518,11 @@
             </div>
             <div class="form-group">
                 <label>ประมาณการผลผลิตทั้งหมด (U<sub>T</sub>) [หน่วย]:</label>
-                <input type="number" id="uop-ut" placeholder="เช่น 50000" inputmode="numeric">
+                <input type="text" class="currency-input" id="uop-ut" placeholder="เช่น 50000" inputmode="numeric">
             </div>
             <div class="form-group">
                 <label>จำนวนผลผลิตประจำงวด t (U<sub>t</sub>) [หน่วย]:</label>
-                <input type="number" id="uop-ut-cur" placeholder="เช่น 10000" inputmode="numeric">
+                <input type="text" class="currency-input" id="uop-ut-cur" placeholder="เช่น 10000" inputmode="numeric">
             </div>
         </div>
 
@@ -743,8 +743,8 @@
     function calcUOP() {
         const C = getNum('uop-c');
         const S = getNum('uop-s');
-        const U_T = parseFloat(document.getElementById('uop-ut').value);
-        const U_t = parseFloat(document.getElementById('uop-ut-cur').value);
+        const U_T = getNum('uop-ut');
+        const U_t = getNum('uop-ut-cur');
 
         if (!C || !U_T || U_T <= 0 || C < S || isNaN(U_t)) {
             alert('กรุณากรอกข้อมูลราคาทุน และจำนวนผลผลิตให้ถูกต้อง');

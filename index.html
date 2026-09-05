@@ -763,39 +763,62 @@
     // === ฟังก์ชันสำหรับจัดการประวัติการคำนวณ ===
     let calcHistory = [];
 
+    // === ระบบบันทึกประวัติด้วย localStorage (บันทึกถาวร + ไม่จำกัด) ===
+    
+    // โหลดประวัติเก่ามาแสดงทันทีเมื่อเปิดหน้าเว็บ
+    document.addEventListener('DOMContentLoaded', renderHistory);
+
     function addHistory(methodName, C, S, resultText) {
         const time = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
         
-        // เพิ่มข้อมูลไว้แถวบนสุด
-        calcHistory.unshift({ time, methodName, C: fmt(C), S: fmt(S), resultText });
+        const newRecord = {
+            time: time,
+            methodName: methodName,
+            C: fmt(C),
+            S: fmt(S),
+            resultText: resultText
+        };
+
+        // ดึงประวัติเดิมจาก localStorage
+        let calcHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
         
-        // เก็บไว้สูงสุด 10 รายการล่าสุด
-        if (calcHistory.length > 10) calcHistory.pop();
-        
+        // เพิ่มรายการใหม่ไว้บนสุด (ไม่จำกัดจำนวนรายการ)
+        calcHistory.unshift(newRecord);
+
+        // บันทึกลง localStorage (ไม่หายเมื่อปิดเว็บ)
+        localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
+
+        // อัปเดตตารางแสดงผล
         renderHistory();
     }
 
     function renderHistory() {
-        const tbody = document.getElementById('history-list');
-        if (calcHistory.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">ยังไม่มีประวัติการคำนวณ</td></tr>';
-            return;
-        }
+        const tbody = document.querySelector('#history-table tbody') || document.querySelector('table tbody');
+        if (!tbody) return;
+        
+        let calcHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
+        tbody.innerHTML = '';
 
-        tbody.innerHTML = calcHistory.map(item => `
-            <tr>
-                <td style="text-align: center;">${item.time}</td>
-                <td style="text-align: center; font-weight: 600;">${item.methodName}</td>
+        calcHistory.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.time}</td>
+                <td>${item.methodName}</td>
                 <td>${item.C}</td>
                 <td>${item.S}</td>
-                <td style="color: var(--primary); font-weight: 600;">${item.resultText}</td>
-            </tr>
-        `).join('');
+                <td>${item.resultText}</td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
+    // ฟังก์ชันสำหรับปุ่มล้างประวัติ
     function clearHistory() {
-        calcHistory = [];
-        renderHistory();
+        if (confirm('คุณต้องการล้างประวัติการคำนวณทั้งหมดใช่หรือไม่?')) {
+            localStorage.removeItem('calcHistory');
+            renderHistory();
+        }
+    }
     }
 </script>
 
